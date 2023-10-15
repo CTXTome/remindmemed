@@ -14,21 +14,29 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Meds Reminder',
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+    return BlocProvider(
+      create:(context) => MedicationBloc(MedicationRepository()),
+      child: MaterialApp(
+        title: 'Meds Reminder',
+        theme: ThemeData(
+          primarySwatch: Colors.blueGrey,
+        ),
+        routes: {
+          '/': (context) => WelcomeScreen(),
+          '/main': (context) => BlocProvider(
+            create: (context) => MedicationBloc(MedicationRepository()),
+            child: MainScreen(),
+          ),
+          '/medications': (context) => BlocProvider(
+            create: (context) => MedicationBloc(MedicationRepository()),
+            child:  MyMedicationScreen(),
+          ),
+          '/add': (context) => BlocProvider(
+                create: (context) => MedicationBloc(MedicationRepository()),
+                child: AddMedicationScreen(),
+              ),
+        },
       ),
-      routes: {
-       '/': (context) => WelcomeScreen(),
-       '/main': (context) => MainScreen(),
-       '/medications':(context) => MyMedicationScreen(),
-       '/add':(context) => BlocProvider(
-      create: (context) => MedicationBloc(MedicationRepository()),
-      child: AddMedicationScreen(),
-    ),
-       }
     );
   }
 }
-

@@ -84,9 +84,10 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
                         BlocProvider.of<MedicationBloc>(context).add(AddMedication(medication));
                         Navigator.of(context).pop();
                         } else {
-                          child: const Text(
-                           'Incorrect settings applied.' 
-                            );
+                          //this is for errors if one were to occur
+                          //child: const Text(
+                           //'Incorrect settings applied.' 
+                            //);
                         }
                         },
                         child: Text('Add Medication'),

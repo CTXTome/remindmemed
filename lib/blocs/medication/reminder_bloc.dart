@@ -8,10 +8,26 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
   final MedicationRepository repository;
 
   MedicationBloc(this.repository) : super(MedicationInitial()) {
-    
     on<LoadMedication>((event, emit) async {
-      List<Medication> meds = await repository.getAllMedications();
-      emit(MedicationLoaded(meds));
+      try {
+        emit(MedicationLoading());
+        final meds = await repository.getAllMedications();
+        emit(MedicationLoaded(meds));
+      } catch (_) {
+        emit(MedicationError());
+      }
     });
+
+    on<AddMedication>((event, emit) async {
+      try {
+        await repository.addMedication(event.medication);
+        final meds = await repository.getAllMedications();
+        emit(MedicationLoaded(meds));
+      } catch (_) {
+        emit(MedicationError());
+      }
+    });
+    
+    // ... Register handlers for other events similarly
   }
 }
