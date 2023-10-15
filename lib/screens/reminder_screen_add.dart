@@ -7,6 +7,8 @@ import 'package:flutter_application_1/blocs/medication/reminder_state.dart';
 
 
 
+
+
 class AddMedicationScreen extends StatefulWidget {
   @override
   _AddMedicationScreenState createState() => _AddMedicationScreenState();
@@ -16,6 +18,20 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
   final TextEditingController _medicationController = TextEditingController();
   final TextEditingController _dosageController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
+  TimeOfDay? _selectedTime;
+
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null && picked != _selectedTime) {
+      setState(() {
+        _selectedTime = picked;
+        _timeController.text = picked.format(context);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,24 +63,39 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
                 labelText: 'When to take it?',
                 border: OutlineInputBorder(),
               ),
+              readOnly: true,
+              onTap: () => _selectTime(context),
             ),
-            ElevatedButton(
-              onPressed: () {
-                final medication = Medication(
-                  name: _medicationController.text,
-                  dosage: _dosageController.text,
-                  time: DateTime.now(), 
+              ElevatedButton(
+                onPressed: () {
+                  if (_selectedTime != null) {
+                    DateTime dateTime = DateTime(
+                      DateTime.now().year,
+                      DateTime.now().month,
+                      DateTime.now().day,
+                      _selectedTime!.hour,
+                      _selectedTime!.minute,
+                      );
+                      final medication = Medication(
+                        name: _medicationController.text,
+                        dosage: _dosageController.text,
+                        time: dateTime,
+                        );
+                        BlocProvider.of<MedicationBloc>(context).add(AddMedication(medication));
+                        Navigator.of(context).pop();
+                        } else {
+                          child: const Text(
+                           'Incorrect settings applied.' 
+                            );
+                        }
+                        },
+                        child: Text('Add Medication'),
+                        ),
+                       ],
+                      ),
+                    ),
                   );
-                  BlocProvider.of<MedicationBloc>(context).add(AddMedication(medication)); //something is broken here between the state and bloc that I cannot figure out
-                  Navigator.of(context).pop();
-              },
-                  child: Text('Add Medication'),
-                  ),
-          ],
-        ),
-      ),
-    );
-  }
+                }
 
   void _addMedication() {
 
