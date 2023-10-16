@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'reminder_screen_medications.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_1/blocs/medication/reminder_bloc.dart';
-import 'package:flutter_application_1/blocs/medication/reminder_event.dart';
 import 'package:flutter_application_1/blocs/medication/reminder_state.dart';
-import 'package:flutter_application_1/medication_model/medication.dart';
-import 'dart:async';
+
 
 class MyMedicationScreen extends StatelessWidget {
   @override
@@ -34,11 +31,25 @@ class MyMedicationScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 20),
-                Card(
-                  child: ListTile(
-                    title: Text("Next Med: Xarelto"),
-                    subtitle: Text("@ 10:30 AM"),
-                  ),
+                BlocBuilder<MedicationBloc, MedicationState>(
+                  builder: (context, state) {
+                    if (state is MedicationLoading) {
+                      return CircularProgressIndicator();
+                    } else if (state is MedicationLoaded &&
+                        state.medications.isNotEmpty) {
+                      final nextMedication = state.medications[
+                          0]; // or however you determine the "next" medication
+                      return Card(
+                        child: ListTile(
+                          title: Text("Next Med: ${nextMedication.name}"),
+                          subtitle: Text(
+                              "@ ${DateFormat('h:mm a').format(nextMedication.time)}"),
+                        ),
+                      );
+                    } else {
+                      return Text('No upcoming medications.');
+                    }
+                  },
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(

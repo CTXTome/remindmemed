@@ -9,6 +9,7 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
 
   MedicationBloc(this.repository) : super(MedicationInitial()) {
     on<LoadMedication>((event, emit) async {
+      print('adding event to repo');
       try {
         emit(MedicationLoading());
         final meds = await repository.getAllMedications();
@@ -19,6 +20,7 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
     });
 
     on<AddMedication>((event, emit) async {
+      print('adding event to repo');
       try {
         await repository.addMedication(event.medication);
         final meds = await repository.getAllMedications();
@@ -29,6 +31,7 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
     });
     
     Stream<MedicationState> _mapLoadMedicationToState() async* {
+      print('adding event to repo');
       yield MedicationLoading();
       try {
         MedicationRepository repository = MedicationRepository();
