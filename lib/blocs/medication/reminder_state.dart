@@ -12,4 +12,6 @@ class MedicationLoaded extends MedicationState {
   MedicationLoaded(this.medications);
 }
 
+class NoMedication extends MedicationState {}
+
 class MedicationError extends MedicationState {}

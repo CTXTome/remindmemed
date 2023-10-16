@@ -60,7 +60,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
             TextField(
               controller: _timeController,
               decoration: InputDecoration(
-                labelText: 'When to take it?',
+                labelText: 'When to take it? (Click into the field to open the Date Picker.)',
                 border: OutlineInputBorder(),
               ),
               readOnly: true,
@@ -68,6 +68,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
             ),
               ElevatedButton(
                 onPressed: () {
+                  final id = DateTime.now().millisecondsSinceEpoch;
                   if (_selectedTime != null) {
                     DateTime dateTime = DateTime(
                       DateTime.now().year,
@@ -77,6 +78,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
                       _selectedTime!.minute,
                       );
                       final medication = Medication(
+                        id: id,
                         name: _medicationController.text,
                         dosage: _dosageController.text,
                         time: dateTime,

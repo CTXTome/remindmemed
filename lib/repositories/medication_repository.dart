@@ -2,9 +2,11 @@ import 'package:flutter_application_1/medication_model/medication.dart';
 
 class MedicationRepository {
   final List<Medication> _store = [];
-
+  
+  int _currentId = 0;
   Future<void> addMedication(Medication medication) async {
-    _store.add(medication);
+    _store.add(medication.copyWith(id: _currentId++));
+    print('Medication has been added.');
   }
 
   Future<List<Medication>> getAllMedications() async {
@@ -22,6 +24,6 @@ class MedicationRepository {
   }
 
   Future<void> deleteMedication(int id) async {
-    _store.removeWhere((medication) => medication.name == id);
+    _store.removeWhere((medication) => medication.id == id);
   }
 }
