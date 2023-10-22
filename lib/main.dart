@@ -10,11 +10,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() => runApp(MyApp());
 
+final medicationRepository = MedicationRepository();
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create:(context) => MedicationBloc(MedicationRepository()),
+      create: (context) => MedicationBloc(medicationRepository),
       child: MaterialApp(
         title: 'Meds Reminder',
         theme: ThemeData(
@@ -22,20 +24,12 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           '/': (context) => WelcomeScreen(),
-          '/main': (context) => BlocProvider(
-            create: (context) => MedicationBloc(MedicationRepository()),
-            child: MainScreen(),
-          ),
-          '/medications': (context) => BlocProvider(
-            create: (context) => MedicationBloc(MedicationRepository()),
-            child:  MyMedicationScreen(),
-          ),
-          '/add': (context) => BlocProvider(
-                create: (context) => MedicationBloc(MedicationRepository()),
-                child: AddMedicationScreen(),
-              ),
+          '/main': (context) => MainScreen(),
+          '/medications': (context) => MyMedicationScreen(),
+          '/add': (context) => AddMedicationScreen(),
         },
       ),
     );
   }
 }
+

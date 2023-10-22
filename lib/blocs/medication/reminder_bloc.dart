@@ -30,32 +30,32 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
       }
     });
     
-    Stream<MedicationState> _mapLoadMedicationToState() async* {
-      print('adding event to repo');
-      yield MedicationLoading();
-      try {
-        MedicationRepository repository = MedicationRepository();
-        List<Medication> medications = await repository.getAllMedications();
-        medications.sort((a, b) => a.time.compareTo(b.time));
+    //Stream<MedicationState> _mapLoadMedicationToState() async* {
+     // print('adding event to repo');
+     // yield MedicationLoading();
+     // try {
+      //  MedicationRepository repository = MedicationRepository();
+     //   List<Medication> medications = await repository.getAllMedications();
+     //   medications.sort((a, b) => a.time.compareTo(b.time));
 
-        Medication? nextMedication;
-        DateTime now = DateTime.now();
+      //  Medication? nextMedication;
+      //  DateTime now = DateTime.now();
 
-        for (Medication med in medications) {
-          if (med.time.isAfter(now)) {
-            nextMedication = med;
-            break;
-          }
-        }
+      //  for (Medication med in medications) {
+      //    if (med.time.isAfter(now)) {
+       //     nextMedication = med;
+       //     break;
+     //     }
+    //    }
 
-        if (nextMedication != null) {
-          yield MedicationLoaded([nextMedication]);
-        } else {
-          yield NoMedication();
-        }
-      } catch (e) {
-        yield MedicationError();
-      }
-    }
+     //   if (nextMedication != null) {
+   //       yield MedicationLoaded([nextMedication]);
+   //     } else {
+   //       yield NoMedication();
+   //     }
+   //   } catch (e) {
+    //    yield MedicationError();
+  //    }
+ //   }
   }
 }
