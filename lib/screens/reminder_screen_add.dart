@@ -1,3 +1,21 @@
+///  DOCUMENTATION
+///  reminder_screen_main.dart file
+/// 
+/// Included functions in file:
+/// Add Medication to the repository.
+/// Bloc is used here to capture the medication and display in the main and my medication pages.
+/// Time picker is provided to capture timestamp for the medication, there is an an analog and digital option to input time.
+/// A unique id will be created to capture the name, dosage and time then stored in the repository.
+/// App Bar allows for navigation back to the previous page and a home button to return to the main page.
+/// 
+/// Page Description:
+/// This page allows for the user to add their medication to be displayed in the "Main" and "My Medication" screens.
+/// The user will input the name, dosage amount, time and upload an image (display of the image will be included at a later date)
+/// Names are recommend to be unique though they are not required. 
+/// 
+
+
+
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +23,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_1/blocs/medication/reminder_event.dart';
 import 'package:flutter_application_1/medication_model/medication.dart';
 import 'package:flutter_application_1/blocs/medication/reminder_bloc.dart';
+
+
 
 class AddMedicationScreen extends StatefulWidget {
   @override
@@ -18,7 +38,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
   final TextEditingController _timeController = TextEditingController();
   TimeOfDay? _selectedTime;
 
-  Future<void> _selectTime(BuildContext context) async {
+  Future<void> _selectTime(BuildContext context) async {//this is for the TimePicker to start with the current time.
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -45,19 +65,28 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Medication')),
+      appBar: AppBar(
+        title: Text('Add Medication'),
+        actions: [
+            IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/main');
+              },
+            ),
+          ],),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
+            TextField(//User inputs the name of the medication.
               controller: _medicationController,
               decoration: InputDecoration(
                 labelText: 'Medication Name',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 16.0), //User inputs Dosage amount.
             TextField(
               controller: _dosageController,
               decoration: InputDecoration(
@@ -65,7 +94,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 16.0),//User can use an interactive analog clock or input in the digital clock the time needed to take their meds.
             TextField(
               controller: _timeController,
               decoration: InputDecoration(
@@ -76,7 +105,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
               readOnly: true,
               onTap: () => _selectTime(context),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 10), // This button will allow for images to be uploaded. However, the feature for displaying on the medication card will not be used at this time. 
             (_pickedImage != null)
                 ? Image.file(_pickedImage!,
                     height: 100, width: 100, fit: BoxFit.cover)
@@ -86,6 +115,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
                     color: Colors.grey[200],
                     child: Icon(Icons.image, color: Colors.grey[500])),
             ElevatedButton(child: Text("Choose File"), onPressed: _pickImage),
+            SizedBox(height: 10), //This is used to add the medication into the repository and bloc
             ElevatedButton(
               onPressed: () {
                 final id = DateTime.now().millisecondsSinceEpoch;

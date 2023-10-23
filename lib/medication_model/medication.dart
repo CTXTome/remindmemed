@@ -1,3 +1,11 @@
+///  DOCUMENTATION
+///  medication.dart file
+/// 
+/// Page Description:
+/// This page handles the Medication class to set the id, name, time and dosage for each medication.
+/// 
+
+
 class Medication {
   final int id;
   final String name;

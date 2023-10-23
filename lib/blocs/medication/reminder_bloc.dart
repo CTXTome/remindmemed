@@ -1,8 +1,17 @@
+///  DOCUMENTATION
+///  reminder_bloc.dart file
+/// 
+/// 
+/// Page Description:
+/// This is the bloc architecture for the app.
+/// This will handle the communication for the app between pages and the calls to the respository.
+/// prints are being used to confirm certain events are behaving as expected.
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_1/blocs/medication/reminder_event.dart';
 import 'package:flutter_application_1/blocs/medication/reminder_state.dart';
 import 'package:flutter_application_1/repositories/medication_repository.dart';
-import 'package:flutter_application_1/medication_model/medication.dart';
+
 
 class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
   final MedicationRepository repository;
@@ -30,32 +39,6 @@ class MedicationBloc extends Bloc<MedicationEvent, MedicationState> {
       }
     });
     
-    //Stream<MedicationState> _mapLoadMedicationToState() async* {
-     // print('adding event to repo');
-     // yield MedicationLoading();
-     // try {
-      //  MedicationRepository repository = MedicationRepository();
-     //   List<Medication> medications = await repository.getAllMedications();
-     //   medications.sort((a, b) => a.time.compareTo(b.time));
 
-      //  Medication? nextMedication;
-      //  DateTime now = DateTime.now();
-
-      //  for (Medication med in medications) {
-      //    if (med.time.isAfter(now)) {
-       //     nextMedication = med;
-       //     break;
-     //     }
-    //    }
-
-     //   if (nextMedication != null) {
-   //       yield MedicationLoaded([nextMedication]);
-   //     } else {
-   //       yield NoMedication();
-   //     }
-   //   } catch (e) {
-    //    yield MedicationError();
-  //    }
- //   }
   }
 }
